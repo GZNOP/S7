@@ -1,4 +1,103 @@
 \documentclass[12pt,a4paper]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{textcomp}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[dvipsnames,svgnames]{xcolor}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{lipsum}
+\usepackage[pointedenum]{paralist}
+\usepackage{listings}
+
+\lstset{
+language=python,
+backgroundcolor=\color{Navy!10},
+keywordstyle=\color{ForestGreen}\bfseries,
+% numbers=left, numberstyle=\tiny,
+tabsize=4,
+}
+
+\hypersetup{colorlinks=true,linkcolor=Brown,breaklinks=true,pdfstartview=XYZ}
+\frenchsetup{StandardItemLabels=true}
+
+\title{Équations différentielles}
+\author{Gloria Faccanoni}
+\date{15 janvier 2014}
+
 \begin{document}
-Mon premier document \LaTeX.
+\maketitle
+
+\begin{abstract}
+\lipsum[1][1-5]
+\end{abstract}
+
+\tableofcontents
+
+\addsec{Introduction}
+\lipsum[1-2]
+
+\section{Rappels}
+\label{eti}
+\lipsum[3]
+
+\subsection{Condition Initiale}
+\lipsum[3]
+
+\subsection{Problème de Cauchy}
+\lipsum[4]
+
+\section{Exercices}
+\lipsum[7]
+
+\section{Suite...}
+On a vu dans la section~\ref{eti} page~\pageref{eti} les rappels nécessaire pour continuer la leçon.
+
+\footnote
+{A apprendre car vous êtes trop nuls}
+
+\section{Entrainement sur les listes}
+\begin{enumerate}
+\item Ont des ailes
+	\begin{enumerate}
+	\item Volent
+		\begin{enumerate}
+		\item Hirondelle
+		\item Aigle
+		\item Ara
+		\end{enumerate}
+	\item Ne volent pas
+		\begin{enumerate}
+		\item Poule
+		\item Autruche
+		\end{enumerate}
+	\end{enumerate}
+	
+\item Vivent dans la mer
+	\begin{itemize}
+	\item Respirent dans l'eau
+		\begin{itemize}
+		\item requin
+		\item hippocampe
+		\end{itemize}
+	\item Respirent hors de l'eau
+		\begin{itemize}
+		\item Baleine
+		\item Dauphin
+		\end{itemize}
+	\end{itemize}
+	
+\item Vivent sur terre
+	\begin{description}
+	\item[Australie:] kangourou, koala
+	\item[Europe:] loup
+	\end{description}	 
+\end{enumerate}
+
+\section{Code}
+
+\lstinputlisting{src.py}
 \end{document}
