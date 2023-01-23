@@ -12,6 +12,12 @@
 \usepackage{lipsum}
 \usepackage[pointedenum]{paralist}
 \usepackage{listings}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{xspace}
+\usepackage{xcolor}
+\usepackage{amsthm}
+
 
 \lstset{
 language=python,
@@ -28,7 +34,20 @@ tabsize=4,
 \author{Gloria Faccanoni}
 \date{15 janvier 2014}
 
+\newcommand{\SNCF}{S.N.C.F}
+\newcommand{\nompropre}[2]{#1~\textsc{#2}\xspace}
+\newcommand{\nom}[2]{\textsc{#2}\xspace}
+
+\theoremstyle{plain}
+	\newtheorem{theoreme}{Théorème}[subsection]
+	\newtheorem{proposition}[theoreme]{Proposition}
+	\newtheorem{corollaire}[theoreme]{Corollaire}
+	\newtheorem{definition}[theoreme]{Définition}
+	\newtheorem{exo}{Exercice}
+
+
 \begin{document}
+
 \maketitle
 
 \begin{abstract}
@@ -100,4 +119,99 @@ On a vu dans la section~\ref{eti} page~\pageref{eti} les rappels nécessaire pou
 \section{Code}
 
 \lstinputlisting{src.py}
+
+\section{Image}
+
+Voici une image dans la marge, la voici en plus grand en figure~\ref{kruskal} \lipsum[2]
+
+\marginpar{\fbox{\includegraphics[width=1.7cm]{tsp}}}
+
+\section{Image flottante}
+\lipsum[3]
+\begin{figure} % flottant
+\centering
+\includegraphics[width=10cm]{tsp}
+\caption{Problème du voyageur du commerce avec l'algorithme de Kruskal}\label{kruskal}
+\end{figure}
+\lipsum
+
+\section{Tableau}
+
+Voici un tableau simple :
+
+On peut se diriger sur le tableau \ref{tab1} :D !
+Et hop c'est facile \lipsum[1]
+
+\begin{table} % flottant
+\centering
+
+\begin{tabular}{|r|c|l|}
+\hline
+AA & BBB & C \\
+\hline
+D & EE & FFF \\ 
+GGG & H & H \\
+\hline
+\end{tabular}
+
+\caption{Le tableau de l'exemple}\label{tab1}
+
+\end{table}
+
+\section{Multicol}
+
+\begin{multicols}{2}
+
+\lipsum[3]
+
+\columnbreak
+
+\includegraphics[scale=0.3]{tsp}
+ 
+\end{multicols}
+
+\section{Commandes / Macro}
+
+\begin{itemize}
+	
+	\item \SNCF{} bla
+	\item \SNCF bla
+	\item \nompropre{Fabio}{Daussy}
+	\item \nom{Fabio}{Daussy}	
+	
+\end{itemize}
+
+\section{Mathématiques}
+
+\subsection{Rappels}
+
+\begin{definition}
+Suspendisse vitae elit. Aliquam arcu neque, ornare in, ullamcorper quis, commodo eu, libero
+\end{definition}
+
+\begin{proposition}
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus
+elit, vestibulum ut, placerat ac, adipiscing vitae, felis.
+\end{proposition}
+
+\begin{proof}
+\lipsum[4]
+\end{proof}
+
+\begin{exo}
+\lipsum[2][1-3]
+\end{exo}
+
+\begin{exo}
+\lipsum[4][1-3]
+\end{exo}
+
+
+
+\subsection{Approfondissements}
+
+
 \end{document}
+
+
+
