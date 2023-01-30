@@ -15,3 +15,4 @@
 \contentsline {section}{\numberline {11}Mathématiques}{8}{section.11}%
 \contentsline {subsection}{\numberline {11.1}Rappels}{8}{subsection.11.1}%
 \contentsline {subsection}{\numberline {11.2}Approfondissements}{8}{subsection.11.2}%
+\contentsline {section}{\numberline {12}Formule}{8}{section.12}%
