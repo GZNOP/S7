@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.6.15)  9 FEB 2023 11:10
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.6.15)  9 FEB 2023 11:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**test.tex
-(./test.tex
+**graphe.tex
+(./graphe.tex
 LaTeX2e <2020-02-02> patch level 2
 L3 programming layer <2020-02-14>
 (/usr/share/texlive/texmf-dist/tex/latex/koma-script/scrartcl.cls
@@ -621,48 +621,43 @@ Package: etoolbox 2019/09/21 v2.5h e-TeX tools for LaTeX (JAW)
 \etb@tempcnta=\count300
 ))
 Class scrartcl Info: amsthm's \deferred@thm@head patched.
-
-(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2019/09/10 1.8c listings language file
-)
-Package hyperref Info: Option `colorlinks' set `true' on input line 30.
-Package hyperref Info: Option `breaklinks' set `true' on input line 30.
+Package hyperref Info: Option `colorlinks' set `true' on input line 21.
+Package hyperref Info: Option `breaklinks' set `true' on input line 21.
 \c@theoreme=\count301
 \c@exo=\count302
- (./test.aux)
-\openout1 = `test.aux'.
+ (./graphe.aux)
+\openout1 = `graphe.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 49.
-LaTeX Font Info:    ... okay on input line 49.
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 49
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 35.
+LaTeX Font Info:    ... okay on input line 35.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 35
 .
-
 (/usr/share/texmf/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Info: Redefining \degres on input line 49.
-LaTeX Info: Redefining \dots on input line 49.
+LaTeX Info: Redefining \degres on input line 35.
+LaTeX Info: Redefining \dots on input line 35.
 Package french.ldf Info: Setting StandardItemizeEnv=true for
 (french.ldf)             compatibility with paralist package,
-(french.ldf)             reported on input line 49.
+(french.ldf)             reported on input line 35.
 Package french.ldf Info: Setting StandardEnumerateEnv=true for
 (french.ldf)             compatibility with paralist package,
-(french.ldf)             reported on input line 49.
-LaTeX Info: Redefining \up on input line 49.
+(french.ldf)             reported on input line 35.
+LaTeX Info: Redefining \up on input line 35.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -686,14 +681,14 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Info: Redefining \microtypecontext on input line 49.
+LaTeX Info: Redefining \microtypecontext on input line 35.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `basictext'.
-LaTeX Info: Redefining \showhyphens on input line 49.
+LaTeX Info: Redefining \showhyphens on input line 35.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -703,7 +698,7 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 (RS)
 )
 \AtBeginShipoutBox=\box99
-Package hyperref Info: Link coloring ON on input line 49.
+Package hyperref Info: Link coloring ON on input line 35.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
@@ -716,13 +711,13 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count309
 )
-LaTeX Info: Redefining \ref on input line 49.
-LaTeX Info: Redefining \pageref on input line 49.
-LaTeX Info: Redefining \nameref on input line 49.
+LaTeX Info: Redefining \ref on input line 35.
+LaTeX Info: Redefining \pageref on input line 35.
+LaTeX Info: Redefining \nameref on input line 35.
 
-(./test.out) (./test.out)
+(./graphe.out) (./graphe.out)
 \@outlinefile=\write3
-\openout3 = `test.out'.
+\openout3 = `graphe.out'.
 
 Class scrartcl Info: loading recommended package `bookmark'.
 (scrartcl)           Using `bookmark' together with `hyperref' is recommended,
@@ -731,7 +726,7 @@ Class scrartcl Info: loading recommended package `bookmark'.
 (scrartcl)           `bookmarkpackage=false' before \begin{document} and
 (scrartcl)           you can avoid this message adding:
 (scrartcl)             \usepackage{bookmark}
-(scrartcl)           before \begin{document} on input line 49.
+(scrartcl)           before \begin{document} on input line 35.
 
 (/usr/share/texlive/texmf-dist/tex/latex/bookmark/bookmark.sty
 Package: bookmark 2019/12/03 v1.28 PDF bookmarks (HO)
@@ -744,8 +739,8 @@ e 168.
 \BKM@id=\count310
 ))
 \c@lstlisting=\count311
-LaTeX Font Info:    Trying to load font information for T1+lmss on input line 5
-2.
+LaTeX Font Info:    Trying to load font information for T1+lmss on input line 3
+7.
 
 (/usr/share/texmf/tex/latex/lm/t1lmss.fd
 File: t1lmss.fd 2009/10/30 v1.6 Font defs for Latin Modern
@@ -754,37 +749,37 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `lmss' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 5
-2.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 3
+7.
 
 (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 5
-2.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 3
+7.
 
 (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-52.
+37.
 
 (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-52.
+37.
 
 (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <17.28> on input line 52.
+(Font)              <17.28> on input line 37.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 52.
+(Font)              <12> on input line 37.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 52.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 52.
+(Font)              <10> on input line 37.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 37.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -793,7 +788,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 52.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 37.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -802,96 +797,50 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-Package tocbasic Info: character protrusion at toc deactivated on input line 57
+Package tocbasic Info: character protrusion at toc deactivated on input line 43
 .
- (./test.toc
+ (./graphe.toc)
+\tf@toc=\write4
+\openout4 = `graphe.toc'.
+
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 4.
+(Font)              <8> on input line 49.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 4.
+(Font)              <6> on input line 49.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 57.
 
 [1
 
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}])
-\tf@toc=\write4
-\openout4 = `test.toc'.
-
- [2] [3]
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-00.
-
-(/usr/share/texmf/tex/latex/lm/ts1lmr.fd
-File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 121.
- (./src.py)
-<tsp.png, id=69, 741.77126pt x 747.79375pt>
-File: tsp.png Graphic file (type png)
-<use tsp.png>
-Package pdftex.def Info: tsp.png  used on input line 127.
-(pdftex.def)             Requested size: 48.36958pt x 48.75662pt.
-
-Overfull \hbox (5.37724pt too wide) in paragraph at lines 127--127
-[][] 
- []
-
-File: tsp.png Graphic file (type png)
-<use tsp.png>
-Package pdftex.def Info: tsp.png  used on input line 133.
-(pdftex.def)             Requested size: 284.52756pt x 286.83461pt.
-Package microtype Info: Character `029' is missing
-(microtype)             in font `T1/lmr/m/sc/12'.
-(microtype)             Ignoring protrusion settings for this character.
-[4 <./tsp.png>] [5] [6]
-File: tsp.png Graphic file (type png)
-<use tsp.png>
-Package pdftex.def Info: tsp.png  used on input line 169.
-(pdftex.def)             Requested size: 222.5331pt x 224.33984pt.
-
-Overfull \hbox (15.21745pt too wide) in paragraph at lines 169--170
-[][] 
- []
-
-[7] [8] [9] (./test.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 341.
- [10]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 341.
- (./test.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 341.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 341.
-Package rerunfilecheck Info: File `test.out' has not changed.
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 57.
+ (./graphe.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 57.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 57.
+Package rerunfilecheck Info: File `graphe.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 341.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 57.
  ) 
 Here is how much of TeX's memory you used:
- 16440 strings out of 483113
- 272219 string characters out of 5964008
- 962251 words of memory out of 5000000
- 31029 multiletter control sequences out of 15000+600000
- 597248 words of font info for 111 fonts, out of 8000000 for 9000
+ 15785 strings out of 483113
+ 265335 string characters out of 5964008
+ 810870 words of memory out of 5000000
+ 30513 multiletter control sequences out of 15000+600000
+ 579261 words of font info for 72 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 45i,13n,56p,10126b,1217s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/en
-c/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/u
-sr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/l
-m/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}</usr/share/texmf/f
-onts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmcsc10
-.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts
-/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb><
-/usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/
-public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/sha
-re/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/l
-m/lmr6.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/f
-onts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmssbx1
-0.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/font
-s/type1/public/lm/lmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
-msfonts/symbols/msbm10.pfb>
-Output written on test.pdf (10 pages, 316725 bytes).
+ 45i,7n,56p,10128b,508s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dv
+ips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/s
+hare/texmf/fonts/enc/dvips/lm/lm-ec.enc}</usr/share/texmf/fonts/type1/public/lm
+/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texm
+f/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17
+.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/t
+ype1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmssbx10.pfb>
+</usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb>
+Output written on graphe.pdf (1 page, 140394 bytes).
 PDF statistics:
- 267 PDF objects out of 1000 (max. 8388607)
- 234 compressed objects within 3 object streams
- 58 named destinations out of 1000 (max. 500000)
- 20622 words of extra memory for PDF output out of 20736 (max. 10000000)
+ 59 PDF objects out of 1000 (max. 8388607)
+ 47 compressed objects within 1 object stream
+ 5 named destinations out of 1000 (max. 500000)
+ 14345 words of extra memory for PDF output out of 14400 (max. 10000000)
 
