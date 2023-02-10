@@ -1,3 +1,4 @@
+from sys import argv
 import tkinter as tk
 
 from projection import *
@@ -8,10 +9,10 @@ LAR = 1280
 HAU = 720
 
 
-WC = [(0, 0),(10 ,100)]
-DC = [(200, 200),(600, 400)]
+WC = [(-5, -25),(5 , 25)]
+DC = [(100, 100),(400, 300)]
 
-M = calculer_matrice(WC, DC)
+M = calculer_matrice(WC, DC, HAU)
 
 X,Y = 0,0
 
@@ -31,18 +32,22 @@ def deplacer_fen(event, ca):
 
     X = event.x
     Y = event.y
-
+    ca.delete("point")
     ca.move("vir", dx, dy)
 
-def maj_viewport(event, ca):
-    global DCM
+def maj_viewport(event, ca, liste_points):
+    global DC, M
     tmp = ca.coords("vir")
-    DC[0] = tmp[0:2]
-    DC[1] = tmp[2:]
+    print(tmp)
+    dy = tmp[3] - tmp[1]
+    print(dy)
+    DC[0] = [tmp[0], HAU - tmp[1] - dy ]
+    DC[1] = [tmp[2], HAU - tmp[3] + dy]
 
-    print(DC)
+    print("DC =", DC)
 
-    M = calculer_matrice(WC, DC)
+    M = calculer_matrice(WC, DC, HAU)
+    projeter_fichier_points_ca(ca, liste_points, M)
 
     print(M)
 
@@ -62,7 +67,7 @@ def creer_root():
 
     return root
 
-def creer_canvas(root):
+def creer_canvas(root, liste_points):
     """
     Créer le canvas qui servira d'écran virtuel pour le tp
     """
@@ -73,7 +78,7 @@ def creer_canvas(root):
 
     ca.tag_bind("vir","<Button-1>", lambda event: obtenir_xy(event))
     ca.tag_bind("vir","<B1-Motion>", lambda event: deplacer_fen(event, ca))
-    ca.tag_bind("vir","<ButtonRelease-1>", lambda event: maj_viewport(event, ca))
+    ca.tag_bind("vir","<ButtonRelease-1>", lambda event: maj_viewport(event, ca, liste_points))
 
     return ca
 
@@ -90,9 +95,8 @@ def projeter_point_ca(ca, point, M):
     """
 
     new = M * point
-    print(new)
 
-    ca.create_rectangle(new[0]-2, new[1]-2, new[0]+2, new[1]+2, tag='vir', fill="red")
+    ca.create_rectangle(new[0]-2, new[1]-2, new[0]+2, new[1]+2, tag='point', fill="red")
 
 
 def projeter_fichier_points_ca(ca, liste, M):
@@ -100,21 +104,44 @@ def projeter_fichier_points_ca(ca, liste, M):
     Projette la liste de points de WC vers DC grace à M et l'affiche sur le canvas ca
     """
 
-    new_liste = projeter_fichier_points(liste, M)
+    new_liste = projeter_fichier_points(liste, M) #On est avec des obj Vecteur
 
+    points = []# ON passe avec une vraie liste pour créer la ligne brisée
+
+    print(WC)
+    print(DC)
     for el in new_liste:
-        ca.create_rectangle(el[0]-2, el[1]-2, el[0]+2, el[1]+2, tag='vir', fill="red")
+        points.append([el[0], el[1]])
+
+    print(points)
+    ca.create_line(points, tag='point', fill="red")
+
 
 
 
 
 # ------------------------ PARTIE PROJECTION ----------------------------
+xmin = float(argv[1])
+xmax = float(argv[2])
+nb_point = int(argv[3])
+coef =  argv[4:]
+
+for i in range(len(coef)):
+    coef[i] = float(coef[i])
+
+p = evaluer_fonction(xmin,xmax,nb_point,coef)
+print(p)
+
+
+
+
+ecrire_points_fichier(p, "/tmp/courbe.dat")
+liste = lecture_fichier_points("/tmp/courbe.dat")
 
 racine = creer_root()
-ca = creer_canvas(racine)
-trace_vir(ca, DC[0][0], DC[0][1], DC[1][0]-DC[0][0], DC[1][1]-DC[0][1])
+ca = creer_canvas(racine, liste)
+trace_vir(ca, DC[0][0], HAU - DC[1][1] , DC[1][0]-DC[0][0], DC[1][1]-DC[0][1])
 
-liste= lecture_fichier_points("points.dat")
 projeter_fichier_points_ca(ca, liste, M)
 
 

@@ -1,7 +1,8 @@
 import Vecteur as v
 import Matrice as m
+from sys import argv
 
-def calculer_matrice(WC, DC):
+def calculer_matrice(WC, DC, hauteur):
     """
     Calcule la matrice de transformation
 
@@ -19,20 +20,19 @@ def calculer_matrice(WC, DC):
     dyv = (DC[1][1] - DC[0][1])
     x_v1 = DC[0][0]
     y_v1 = DC[0][1]
+    y_v2 = DC[1][1]
 
     # Calcule de la matrice
 
     M = m.Matrice(3,3)
     M[0] = [ dxv/dxw  , 0 , - x_w1 * dxv / dxw + x_v1 ]
-    M[1] = [ 0 , - dyv/dyw , y_w1 * dyv / dyw + dyv + y_v1]
+    M[1] = [ 0 , - dyv/dyw , y_w1 * dyv / dyw + dyv + (hauteur - y_v2)]
     M[2] = [ 0 , 0 , 1 ]
 
     #M =  [[ e/c  , 0 , e*g/c - a]\
     #    ,[ 0 , (f/d) , -b + f*h/d + f*hauteur/d]\
     #    ,[ 0 , 0 , 1 ]]
     return M
-
-
 
 def projeter_point(point, M):
     """
@@ -43,11 +43,7 @@ def projeter_point(point, M):
 
     """
 
-    print("point WC : ",point)
-
     res = M * point
-
-    print("point DC : ",res)
 
     return res
 
@@ -86,11 +82,54 @@ def projeter_fichier_points(liste_points, M):
 
     return nouvelle_liste
 
-if __name__ == "__main__":
-    WC = [(0, 0),(100 ,100)]
-    DC = [(200, 200),(400, 400)]
+def horner(P, x):
+    """
+    Algorithme de calcule d'un polynome avec la méthode de Horner
+    """
+    n = len(P)
+    res = P[n-1]
+    i = n-2
+    while i >= 0:
+        res = res * x + P[i]
+        i -= 1
+    return res
 
-    M = calculer_matrice(WC, DC)
-    liste= lecture_fichier_points("points.dat",M)
-    s = projeter_fichier_points(liste, M)
-    print(s)
+def evaluer_fonction(xmin, xmax, nb_point, P ):
+    """
+    Evalue la fonction P dans l'intervalle [xmin, xmax] en nb_point points
+    """
+    pas = (xmax-xmin) / nb_point
+
+    points = []
+
+    i = xmin
+    while i <= xmax:
+        points.append([i,horner(P,i)])
+        i += pas
+
+    return points
+
+def ecrire_points_fichier(liste_points, nom_fichier):
+    """
+    Ecrit un fichier de points dans le fichier nom_fihcier
+    """
+
+    fic = open(nom_fichier, "w")
+
+    for points in liste_points:
+        fic.write(f"{points[0]} {points[1]}\n")
+
+
+if __name__ == "__main__":
+    print(argv)
+    xmin = float(argv[1])
+    xmax = float(argv[2])
+    nb_point = int(argv[3])
+    coef =  argv[4:]
+    for i in range(len(coef)):
+        coef[i] = float(coef[i])
+
+    p = evaluer_fonction(xmin,xmax,nb_point,coef)
+    print(p)
+
+    ecrire_points_fichier(p, "courbe.dat")
