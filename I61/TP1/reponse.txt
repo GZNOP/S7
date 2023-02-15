@@ -1,0 +1,183 @@
+1 / NMI(X,Y) = (2 *( H(X) + H(Y) - H(X,Y)) / (H(X) + H(Y))
+
+2 /
+
+[1.22070312e-04 3.05175781e-05 6.10351562e-05 7.62939453e-05
+ 1.83105469e-04 2.59399414e-04 2.13623047e-04 4.11987305e-04
+ 4.57763672e-04 5.18798828e-04 8.39233398e-04 7.47680664e-04
+ 1.09863281e-03 1.29699707e-03 1.49536133e-03 1.55639648e-03
+ 1.78527832e-03 2.24304199e-03 2.27355957e-03 3.08227539e-03
+ 3.03649902e-03 3.75366211e-03 4.53186035e-03 5.05065918e-03
+ 5.24902344e-03 5.38635254e-03 6.40869141e-03 6.07299805e-03
+ 6.89697266e-03 6.39343262e-03 6.71386719e-03 7.23266602e-03
+ 6.57653809e-03 6.80541992e-03 5.87463379e-03 6.59179688e-03
+ 6.30187988e-03 5.52368164e-03 5.05065918e-03 4.91333008e-03
+ 4.42504883e-03 3.86047363e-03 3.64685059e-03 3.69262695e-03
+ 3.58581543e-03 3.32641602e-03 3.08227539e-03 3.09753418e-03
+ 2.80761719e-03 2.79235840e-03 2.30407715e-03 2.63977051e-03
+ 2.48718262e-03 2.51770020e-03 2.42614746e-03 2.68554688e-03
+ 2.59399414e-03 2.57873535e-03 2.77709961e-03 2.88391113e-03
+ 2.88391113e-03 2.96020508e-03 2.62451172e-03 3.35693359e-03
+ 2.77709961e-03 3.09753418e-03 3.14331055e-03 2.80761719e-03
+ 3.35693359e-03 3.11279297e-03 2.79235840e-03 3.15856934e-03
+ 3.31115723e-03 3.32641602e-03 2.73132324e-03 3.21960449e-03
+ 2.94494629e-03 3.49426270e-03 3.69262695e-03 4.18090820e-03
+ 4.08935547e-03 3.81469727e-03 3.73840332e-03 3.82995605e-03
+ 4.01306152e-03 3.93676758e-03 4.45556641e-03 4.69970703e-03
+ 5.21850586e-03 6.19506836e-03 7.47680664e-03 7.23266602e-03
+ 7.85827637e-03 7.04956055e-03 6.28662109e-03 6.59179688e-03
+ 6.08825684e-03 5.69152832e-03 5.53894043e-03 4.76074219e-03
+ 4.77600098e-03 4.54711914e-03 4.53186035e-03 4.53186035e-03
+ 4.33349609e-03 4.66918945e-03 4.40979004e-03 4.50134277e-03
+ 4.28771973e-03 4.24194336e-03 4.33349609e-03 4.10461426e-03
+ 4.30297852e-03 4.10461426e-03 4.92858887e-03 4.83703613e-03
+ 5.37109375e-03 6.11877441e-03 6.22558594e-03 7.04956055e-03
+ 6.13403320e-03 6.69860840e-03 6.88171387e-03 7.84301758e-03
+ 8.72802734e-03 9.62829590e-03 8.68225098e-03 8.57543945e-03
+ 8.43811035e-03 7.40051270e-03 6.69860840e-03 5.76782227e-03
+ 5.73730469e-03 5.76782227e-03 6.01196289e-03 6.51550293e-03
+ 6.83593750e-03 7.30895996e-03 8.04138184e-03 7.70568848e-03
+ 7.72094727e-03 8.30078125e-03 8.28552246e-03 8.78906250e-03
+ 7.69042969e-03 7.52258301e-03 7.64465332e-03 7.23266602e-03
+ 6.89697266e-03 7.12585449e-03 7.65991211e-03 7.98034668e-03
+ 7.94982910e-03 9.27734375e-03 9.70458984e-03 8.10241699e-03
+ 8.01086426e-03 9.49096680e-03 9.03320312e-03 8.46862793e-03
+ 7.18688965e-03 6.53076172e-03 6.31713867e-03 5.38635254e-03
+ 5.32531738e-03 5.06591797e-03 4.37927246e-03 4.54711914e-03
+ 4.04357910e-03 3.54003906e-03 3.92150879e-03 3.86047363e-03
+ 3.73840332e-03 3.90625000e-03 4.71496582e-03 4.44030762e-03
+ 4.83703613e-03 4.76074219e-03 4.71496582e-03 3.98254395e-03
+ 3.64685059e-03 4.15039062e-03 3.96728516e-03 3.89099121e-03
+ 3.41796875e-03 3.00598145e-03 2.92968750e-03 2.27355957e-03
+ 2.34985352e-03 2.18200684e-03 2.09045410e-03 1.70898438e-03
+ 2.51770020e-03 2.70080566e-03 2.45666504e-03 2.41088867e-03
+ 2.51770020e-03 2.97546387e-03 2.94494629e-03 3.12805176e-03
+ 2.97546387e-03 3.20434570e-03 2.76184082e-03 2.99072266e-03
+ 3.02124023e-03 3.38745117e-03 2.96020508e-03 3.11279297e-03
+ 3.06701660e-03 2.80761719e-03 2.80761719e-03 2.48718262e-03
+ 3.25012207e-03 3.18908691e-03 3.84521484e-03 3.44848633e-03
+ 3.08227539e-03 3.18908691e-03 2.92968750e-03 2.70080566e-03
+ 2.25830078e-03 2.04467773e-03 1.83105469e-03 1.93786621e-03
+ 1.28173828e-03 1.09863281e-03 8.39233398e-04 9.91821289e-04
+ 7.78198242e-04 6.25610352e-04 8.23974609e-04 5.34057617e-04
+ 5.03540039e-04 3.20434570e-04 3.66210938e-04 1.67846680e-04
+ 1.22070312e-04 1.37329102e-04 1.22070312e-04 7.62939453e-05
+ 1.52587891e-05 0.00000000e+00 3.05175781e-05 1.52587891e-05
+ 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 1.52587891e-05 0.00000000e+00 0.00000000e+00 0.00000000e+00
+ 1.52587891e-05]
+
+
+3 /
+from math import log2
+def entropie(P):
+    """
+    Calcule l'entropie de la liste de probabilité passée en paramêtre
+    """
+
+    entr = 0
+
+    for i in range(len(P)):
+        if P[i]:
+            entr -= P[i] * log2(P[i])
+
+l'entropie est d'environ 7.65
+
+4 /
+
+  Il faut calculer les probabilités jointes, c'est à dire étudier les couples
+  de valeurs x,y qui correspondent aux valeurs du gris sur le meme pixel de l'image.
+
+  def proba_jointes(T1, T2, n_val):
+      """
+      Calcule les probabilités jointes des tableaux à deux dimensions
+      en calculant la probabilité des couples.
+      """
+      dico = {}
+
+      for i in range(len(T1)):
+          for j in range(len(T1[0])):
+
+              if (T1[i][j], T2[i][j]) not in dico.keys():
+                  dico[(T1[i][j], T2[i][j])] = 1
+              else:
+                  dico[(T1[i][j], T2[i][j])] += 1
+
+      prob = []
+      for occ in dico.values() :
+          prob.append(occ / (n_val*n_val))
+
+      return prob
+
+  Ainsi, au départ on compte le nombre d'occurence des couples qui apparaissent entre
+  lena et lena4 puis on calcule leurs probabilité
+
+  On calcule l'entropie et on obtient : H(X,Y) = 10.36
+
+5 / Nous allons réutiliser la formule question 1
+
+def NMI(Im1, Im2):
+  # Im1: image 1 (2D np array)
+  # Im2: image 2 (2D np array)
+
+  xe = np.asarray(range(np.amax(Im1[:])+2)) # Nb de valeur possible (i)
+  H1, xe = np.histogram(Im1.reshape(-1), bins=xe) # H1[i] c'est le nombre d'occurence de cette valeur de i
+  P1 = H1/Im1.size # C'est la probabilité des gris dans l'image 1
+
+  entropie1 = entropie(P1) # entropie pour l'image 1
+
+
+  xe = np.asarray(range(np.amax(Im2[:])+2)) # Nb de valeur possible (i)
+  H2, xe = np.histogram(Im2.reshape(-1), bins=xe) # H2[i] c'est le nombre d'occurence de cette valeur de i
+  P2 = H2/Im2.size # C'est la probabilité des gris dans l'image 2
+
+  entropie2 = entropie(P2) # entropie pour l'image 2
+
+  # Densité de probabilité jointe et entropie jointe
+
+  pj = proba_jointes(Im1, Im2, xe[-1])
+  entropie_jointe = entropie(pj)
+
+  # Calcul de l'information mutuelle normalisée
+
+  nmi = (2 *( entropie1 + entropie2 - entropie_jointe) / (entropie1 + entropie2))
+  return nmi
+
+  Pour les images de lena, on obtient NMI = 0.29 environ
+
+6 /
+
+  On calcule les différence entre les images selon les décallages comme ceci
+
+  Im1array = np.asarray(Im1)
+  Im2array = np.asarray(Im2)
+
+  crop = 200
+
+  # Partie centrale de l'image 1
+  Im1cent = Im1array[crop:-crop,crop:-crop]
+  plt.figure(1)
+  plt.imshow(Im1cent)
+
+  # Partie centrale de l'image 1 décalé de 1 px en haut
+  Im2origX = Im2array[crop+1:-crop+1,crop:-crop]
+  plt.figure(2)
+  plt.imshow(Im2origX)
+
+  # Différence entre les deux images
+  ImdiffX = Im1cent - Im2origX
+  plt.figure(3)
+  plt.imshow(abs(ImdiffX))
+  plt.colorbar()
+
+  # Partie centrale de l'image 1 décalé de 1 px à droite
+  Im2origY = Im2array[crop:-crop,crop+1:-crop+1]
+  plt.figure(4)
+  plt.imshow(Im2origY)
+
+  ImdiffY = Im1cent - Im2origY
+  plt.figure(5)
+  plt.imshow(abs(ImdiffY))
+  plt.colorbar()
+
+  plt.show()
