@@ -118,8 +118,6 @@ def projeter_fichier_points_ca(ca, liste, M):
 
 
 
-
-
 # ------------------------ PARTIE PROJECTION ----------------------------
 xmin = float(argv[1])
 xmax = float(argv[2])

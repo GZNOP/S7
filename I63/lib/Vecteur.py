@@ -5,7 +5,10 @@ class Vecteur :
         self._vec = list()
 
         for el in vec:
-            self._vec.append(el)
+            if type(el) is str:
+                self._vec.append(float(el))
+            else:
+                self._vec.append(el)
 
 
     def __getitem__(self,i):
@@ -13,6 +16,31 @@ class Vecteur :
 
     def __setitem__(self,i,val):
         self._vec[i] = val
+
+    @property
+    def x(self):
+        return self[0]
+
+    @x.setter
+    def x(self, val):
+        self[0] = val
+
+    @property
+    def y(self):
+        return self[1]
+
+    @y.setter
+    def y(self, val):
+        self[1] = val
+
+    @property
+    def z(self):
+        return self[2]
+
+    @z.setter
+    def z(self, val):
+        self[2] = val
+
 
     def __len__(self):
         return len(self._vec)

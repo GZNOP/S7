@@ -1,4 +1,4 @@
-from Vecteur import *
+from lib.Vecteur import *
 
 class Matrice:
 
