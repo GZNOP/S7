@@ -1,0 +1,23 @@
+#ifndef _GRAPHE
+  #define _GRAPHE
+#include "pile.h"
+typedef struct{
+  int nbs;
+  char ** mat;
+  char * clr;
+}t_graphe;
+
+typedef struct{
+  int nbs;
+  t_pile * adj;
+}t_gpile;
+
+t_graphe InitG(int);
+
+t_gpile InitGP(int);
+
+t_graphe AleaG(int n, float t);
+
+
+
+#endif
