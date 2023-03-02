@@ -1,15 +1,20 @@
+import sys
+if __name__ == "__main__":
+    sys.path.append("..")
+
 from sys import argv
+
 import tkinter as tk
 
 from projection import *
-import Vecteur as v
-import Matrice as m
+import lib.Vecteur as v
+import lib.Matrice as m
 
 LAR = 1280
 HAU = 720
 
 
-WC = [(-5, -25),(5 , 25)]
+WC = [(0, 0),(10 , 10)]
 DC = [(100, 100),(400, 300)]
 
 M = calculer_matrice(WC, DC, HAU)
@@ -35,21 +40,13 @@ def deplacer_fen(event, ca):
     ca.delete("point")
     ca.move("vir", dx, dy)
 
-def maj_viewport(event, ca, liste_points):
-    global DC, M
+def maj_viewport(event,canvas, liste_points):
     tmp = ca.coords("vir")
-    print(tmp)
     dy = tmp[3] - tmp[1]
-    print(dy)
     DC[0] = [tmp[0], HAU - tmp[1] - dy ]
     DC[1] = [tmp[2], HAU - tmp[3] + dy]
-
-    print("DC =", DC)
-
     M = calculer_matrice(WC, DC, HAU)
     projeter_fichier_points_ca(ca, liste_points, M)
-
-    print(M)
 
 
 
@@ -96,6 +93,8 @@ def projeter_point_ca(ca, point, M):
 
     new = M * point
 
+    print(new)
+
     ca.create_rectangle(new[0]-2, new[1]-2, new[0]+2, new[1]+2, tag='point', fill="red")
 
 
@@ -128,9 +127,8 @@ for i in range(len(coef)):
     coef[i] = float(coef[i])
 
 p = evaluer_fonction(xmin,xmax,nb_point,coef)
-print(p)
 
-
+V = v.Vecteur([2,2])
 
 
 ecrire_points_fichier(p, "/tmp/courbe.dat")
@@ -140,6 +138,7 @@ racine = creer_root()
 ca = creer_canvas(racine, liste)
 trace_vir(ca, DC[0][0], HAU - DC[1][1] , DC[1][0]-DC[0][0], DC[1][1]-DC[0][1])
 
+projeter_point_ca(ca,V,M)
 projeter_fichier_points_ca(ca, liste, M)
 
 

@@ -97,12 +97,16 @@ U:= \{ \{1,2\},\{1,3\},\{3,4\},\{2,4\},\{2,5\},\{4,5\},\{2,3\},\{1,4\} \}\]
 \end{exemple}
 
 \begin{definition}
-	On dit que deux sommets $x,y \in X$ sont \textbf{adjacents} si et seulement si $(x,y) \in U$.
+	On dit que deux sommets $x,y \in X$ sont \textbf{adjacents} si et seulement si $\{x,y\} \in U$.
 \end{definition}
 
 \begin{definition}
 	Soit un sommet $s$. On appelle \textbf{degré} de $s$ le nombre d'arêtes qui sont \textbf{incidentes} en $s$. Le degré d'un sommet $s \in X$ se note aussi $deg(s)$.
 \end{definition}
+
+\begin{exemple}
+	L'ensemble des degrés des sommets de $G$ (\ref{t.deg}).
+\end{exemple}
 
 \begin{table}[tbp]
 	\centering
@@ -127,10 +131,6 @@ U:= \{ \{1,2\},\{1,3\},\{3,4\},\{2,4\},\{2,5\},\{4,5\},\{2,3\},\{1,4\} \}\]
 \begin{definition}
 	On appelle l'\textbf{ordre} d'un graphe $G$ le nombre de sommets qui le composent (i.e. le cardinal de $X$).
 \end{definition}
-
-\begin{exemple}
-	L'ensemble des degrés des sommets de $G$ (\ref{g.maison}).
-\end{exemple}
 
 \begin{definition}
 	Un sommet $s$ est dit \textbf{isolé} si et seulement si son degré vaut $0$.
@@ -187,7 +187,7 @@ Notons que:
 	\end{itemize}
 
 \begin{definition}
-	On dit que deux sommets sont \textbf{liés} si et seulement si, il existe un chemin d'extrémités $x$ et $y$. On note la liaison:
+	On dit que deux sommets $x,y$ sont \textbf{liés} si et seulement si, il existe un chemin d'extrémités $x$ et $y$. On note la liaison:
 	\[
 	x \leadsto y	
 	\]
@@ -220,7 +220,7 @@ Notons que:
 \end{figure}
 
 \begin{remarque}
-	On appelle \textbf{graphe connexe} les graphes à une composante connexe.
+	On appelle \textbf{graphes connexes} les graphes à une composante connexe.
 \end{remarque}
 
 \section{Graphe Eulerien}\label{euler}
@@ -242,7 +242,7 @@ Le théorème d'Euler permet de vérifier s'il existe ou non un cycle Eulérien 
 Le graphe maison (\ref{g.maison}) est bien connexe. En revanche, le sommet 1 est de degré impair donc il n'est pas eulérien. 
 Démontrons ce théorême :
 \begin{proof}
-	\G, dont tous les sommets sont de degré pair. On choisit un sommet $x_0$. On construit un chemin de proche en proche en s'interdisant de passer de repasser deux fois pas la même arête tant que possible. Cette promenade s'arrête en $x_0$ (point de départ).
+	\G, dont tous les sommets sont de degré pair. On choisit un sommet $x_0$. On construit un chemin de proche en proche en s'interdisant de repasser deux fois pas la même arête tant que possible. Cette promenade s'arrête en $x_0$ (point de départ).
 	On considère le graphe partiel composé des arêtes restantes, il n'est pas forcément connexe. Chaque composante connexe est un graphe d'ordre $< n$ car $x_0$ est isolé. Les parités des degrés restent inchangées donc chaque composante connexe admet un \textbf{cycle eulérien}. On dit que chaque composante connexe du graphe partiel possède un représentant sur la promenade.
 	
 Ainsi pour faire le cycle, il suffit de passer sur la promenade initial, et à chaque représentant, on trace son cycle eulérien jusqu'à $x_0$ et le cycle eulérien sur le graphe initial est effectué.
@@ -297,7 +297,7 @@ La complexité de cet algorithme est quadratique, il est en $O(n^2)$ si on consi
 
 \section{Conclusion}
 
-Nous n'avons qu'effleurer le sujet immense que sont les graphes, ceux-ci sont partout autour de nous. Mais l'intêret de cette courte initiation était de vous donner une petite soif de savoir sur les graphes. En espérant que j'ai, au moins partiellement, réussi à vous cette envie.
+Nous n'avons qu'effleurer le sujet immense que sont les graphes, ceux-ci sont partout autour de nous. Mais l'intêret de cette courte initiation était de vous donner une petite soif de savoir sur les graphes. En espérant que j'ai, au moins partiellement, réussi à vous donner cette envie.
 
 \bibliography{graphe}
 

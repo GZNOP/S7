@@ -1,6 +1,10 @@
-import Vecteur as v
-import Matrice as m
 from sys import argv
+import sys
+if __name__ == "__main__":
+    sys.path.append("..")
+
+import lib.Vecteur as v
+import lib.Matrice as m
 
 def calculer_matrice(WC, DC, hauteur):
     """
@@ -32,6 +36,9 @@ def calculer_matrice(WC, DC, hauteur):
     #M =  [[ e/c  , 0 , e*g/c - a]\
     #    ,[ 0 , (f/d) , -b + f*h/d + f*hauteur/d]\
     #    ,[ 0 , 0 , 1 ]]
+
+    print(M)
+
     return M
 
 def projeter_point(point, M):
@@ -42,9 +49,9 @@ def projeter_point(point, M):
     point est un tuple de (x_p, y_p)
 
     """
-
+    print(point)
     res = M * point
-
+    print(res)
     return res
 
 def lecture_fichier_points(nom_fichier):
