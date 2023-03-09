@@ -1,4 +1,5 @@
 from lib.Vecteur import *
+from lib.Point import *
 
 class Matrice:
 
@@ -36,9 +37,10 @@ class Matrice:
         produit matricielle ou produit scalaire
         """
 
-        if type(other) is Vecteur:
+        if type(other) is Point2D:
 
-            res = Vecteur([0] * len(other))
+            res = Point2D(0,0)
+            res[2] = 0
 
             for i in range(len(other)):
                 for j in range(len(other)):

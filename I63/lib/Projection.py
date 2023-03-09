@@ -4,6 +4,7 @@ from sys import argv
 if __name__ == "__main__":
     sys.path.append("..")
 
+import lib.Segment as s
 import lib.Vecteur as v
 import lib.Matrice as m
 import tkinter as tk
@@ -18,7 +19,7 @@ PENSER QUE LES POINTS SONT DE DIMENSION 3 POUR L'HOMOGÉNÉITÉ DE LA MATRICE !!
 
 class Projection:
 
-    def __init__(self, ca, tag, WC, DC, coul="red"):
+    def __init__(self, ca, tag, WC, DC):
         if len(WC) + len(DC) != 4 and type(WC[0]) is not v.Vecteur and type(DC[0]) is not v.Vecteur:
             raise ValueError
         # On associe tout de suite notre projection à un canvas
@@ -37,16 +38,11 @@ class Projection:
 
         self._point = [] # Une liste de points
 
-        self._seg = [] # liste de couple de points qui sont les extrémités des
-        # segments
-
-        self._coul = coul
+        self._seg = [] # liste d'instances de segments
 
         self._X = None
 
         self._Y = None
-
-        self._ep = 3
 
         self._canvas.create_rectangle(self.DC0.x, self._hauteur - self.DC0.y, self.DC1.x,\
         self._hauteur - self.DC1.y, fill="grey", tag=self._tag)
@@ -135,8 +131,8 @@ class Projection:
         """
         Projette tous les segments de la liste _seg de l'instance
         """
-        for P1,P2 in self._seg:
-            self.segment_bresenham(P1,P2)
+        for S in self._seg:
+            self.segment_bresenham(S)
 
     def calculer_matrice(self):
         """
@@ -165,8 +161,8 @@ class Projection:
         """
 
         res = self._M * point
-        self._canvas.create_rectangle(res.x-self._ep, res.y-self._ep, res.x+self._ep, res.y+self._ep,\
-        width=0, fill=self._coul, tag=f"point_{self._tag}")
+        self._canvas.create_rectangle(res.x-point.ep, res.y-point.ep, res.x+point.ep, res.y+point.ep,\
+        width=0, fill=point.coul, tag=f"point_{self._tag}")
 
     def projeter_liste(self):
         """
@@ -174,16 +170,16 @@ class Projection:
         """
         for p in self._point:
             res = self._M * p
-            self._canvas.create_rectangle(res.x-self._ep, res.y-self._ep, res.x+self._ep, res.y+self._ep,\
-            width=0, fill=self._coul, tag=f"point_{self._tag}")
+            self._canvas.create_rectangle(res.x-p.ep, res.y-p.ep, res.x+p.ep, res.y+p.ep,\
+            width=0, fill=p.coul, tag=f"point_{self._tag}")
 
-    def projeter_point_segment(self,x,y):
+    def projeter_point_segment(self,x,y, couleur_seg, epaisseur):
         """
         Projette dans le DC directement, sans passer par la matrice
         Utilisée spécifiquement pour Bresenham
         """
-        self._canvas.create_rectangle(x-self._ep, y-self._ep, x+self._ep, y+self._ep,\
-        width=0, fill=self._coul, tag=f"point_seg_{self._tag}")
+        self._canvas.create_rectangle(x-epaisseur, y-epaisseur, x+epaisseur, y+epaisseur,\
+        width=0, fill=couleur_seg, tag=f"point_seg_{self._tag}")
 
 
     def projeter_fichier(self, nom_fichier):
@@ -218,20 +214,29 @@ class Projection:
             vp = v.Vecteur([point[0], point[1], 1])
             self + vp
 
-    def segment_bresenham(self, A, B):
+    def segment_bresenham(self, S):
         """
         Création d'un segment à l'aide de l'algorithme de Bresenham
         """
         # On projette d'abord les deux points du segment avant de faire l'algo
         # Sinon il y a des trous
 
-        if [A,B] not in self._seg:
-            self._seg.append([A,B])
+        seg_color = S.coul
+        seg_ep = S.ep
+        pas = 1
 
+        if pas == 0:
+            pas = 1
 
+        # On récupère les extrémités du segment
+        A = S.P1
+        B = S.P2
+
+        # On les projette
         A = self._M * A
         B = self._M * B
 
+        # Puis on trace le segment avec Bresenham
         dx = B.x - A.x
         dy = B.y - A.y
         if dx >= 0 and dy >= 0: # Premier Quartant
@@ -240,24 +245,23 @@ class Projection:
                 y = A.y
                 dec = abs(dx) - 2*abs(dy)
                 while x <= B.x:
-                    self.projeter_point_segment(x,y)
+                    self.projeter_point_segment(x,y,seg_color, seg_ep)
                     if dec < 0:
                         dec = dec +2*abs(dx)
-                        y = y + (2*self._ep)
+                        y = y + (2*pas)
                     dec = dec -2*abs(dy)
-                    x = x + (2*self._ep)
-                    print(x,y)
+                    x = x + (2*pas)
             elif dy != 0 and abs(dx) < abs(dy): # Deuxième Octant
                 x = A.x
                 y = A.y
                 dec = abs(dy) - 2*abs(dx)
                 while y <= B.y:
-                    self.projeter_point_segment(x,y)
+                    self.projeter_point_segment(x,y,seg_color, seg_ep)
                     if dec < 0:
                         dec = dec +2*abs(dy)
-                        x = x + (2*self._ep)
+                        x = x + (2*pas)
                     dec = dec -2*abs(dx)
-                    y = y + (2*self._ep)
+                    y = y + (2*pas)
 
         elif dx < 0 and dy > 0: # Deuxième Quartant
             if dy != 0 and abs(dx) >= abs(dy): # 4e octant
@@ -265,24 +269,24 @@ class Projection:
                 y = A.y
                 dec = abs(dx) - 2*abs(dy)
                 while x >= B.x:
-                    self.projeter_point_segment(x,y)
+                    self.projeter_point_segment(x,y,seg_color, seg_ep)
                     if dec < 0:
                         dec = dec +2*abs(dx)
-                        y = y + (2*self._ep)
+                        y = y + (2*pas)
                     dec = dec -2*abs(dy)
-                    x = x - (2*self._ep)
+                    x = x - (2*pas)
 
             elif dy != 0 and abs(dx) < abs(dy): # 3e octant
                 x = A.x
                 y = A.y
                 dec = abs(dy) - 2*abs(dx)
                 while y <= B.y:
-                    self.projeter_point_segment(x,y)
+                    self.projeter_point_segment(x,y,seg_color, seg_ep)
                     if dec < 0:
                         dec = dec +2*abs(dy)
-                        x = x - (2*self._ep)
+                        x = x - (2*pas)
                     dec = dec -2*abs(dx)
-                    y = y + (2*self._ep)
+                    y = y + (2*pas)
 
         elif dx < 0 and dy < 0: # 3e Quartant
             if dy != 0 and abs(dx) >= abs(dy): # 5e octant
@@ -290,24 +294,24 @@ class Projection:
                 y = A.y
                 dec = abs(dx) - 2*abs(dy)
                 while x >= B.x:
-                    self.projeter_point_segment(x,y)
+                    self.projeter_point_segment(x,y,seg_color, seg_ep)
                     if dec < 0:
                         dec = dec +2*abs(dx)
-                        y = y - (2*self._ep)
+                        y = y - (2*pas)
                     dec = dec -2*abs(dy)
-                    x = x - (2*self._ep)
+                    x = x - (2*pas)
 
             elif dy != 0 and abs(dx) < abs(dy): # 6e octant
                 x = A.x
                 y = A.y
                 dec = abs(dy) - 2*abs(dx)
                 while y >= B.y:
-                    self.projeter_point_segment(x,y)
+                    self.projeter_point_segment(x,y,seg_color, seg_ep)
                     if dec < 0:
                         dec = dec +2*abs(dy)
-                        x = x - (2*self._ep)
+                        x = x - (2*pas)
                     dec = dec -2*abs(dx)
-                    y = y - (2*self._ep)
+                    y = y - (2*pas)
         elif dx > 0 and dy < 0: # 4e Quartant
             if dy != 0 and abs(dx) >= abs(dy): # 8e octant
                 x = A.x
@@ -315,12 +319,12 @@ class Projection:
                 dec = abs(dx) - 2*abs(dy)
                 while x <= B.x:
                     #self + v.Vecteur([x,y,1])
-                    self.projeter_point_segment(x,y)
+                    self.projeter_point_segment(x,y,seg_color, seg_ep)
                     if dec < 0:
                         dec = dec +2*abs(dx)
-                        y = y - (2*self._ep)
+                        y = y - (2*pas)
                     dec = dec -2*abs(dy)
-                    x = x + (2*self._ep)
+                    x = x + (2*pas)
 
 
             elif dy != 0 and abs(dx) < abs(dy): # 7e octant
@@ -328,17 +332,22 @@ class Projection:
                 y = A.y
                 dec = abs(dy) - 2*abs(dx)
                 while y >= B.y:
-                    self.projeter_point_segment(x,y) # On allume le pixel
+                    self.projeter_point_segment(x,y,seg_color, seg_ep) # On allume le pixel
                     if dec < 0:
                         dec = dec +2*abs(dy)
-                        x = x + (2*self._ep)
+                        x = x + (2*pas)
                     dec = dec -2*abs(dx)
-                    y = y - (2*self._ep)
+                    y = y - (2*pas)
 
-    def __add__(self, point):
+    def __add__(self, other):
         """
         Ajoute le point dans la liste de points
         """
-        if type(point) is v.Vecteur:
-            self._point.append(point)
-            self.projeter_point(point)
+
+        if type(other) is v.Vecteur:
+            self._point.append(other)
+            self.projeter_point(other)
+
+        elif type(other) is s.Segment:
+            self._seg.append(other)
+            self.segment_bresenham(other)
