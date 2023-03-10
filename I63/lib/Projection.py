@@ -9,6 +9,7 @@ import lib.Vecteur as v
 import lib.Matrice as m
 import tkinter as tk
 from lib.eval_fonc import evaluer_fonction
+from lib.Point import *
 
 """
 
@@ -36,9 +37,17 @@ class Projection:
 
         self._M = self.calculer_matrice() # La matrice de projection
 
+        self._tr = m.Matrice(3,3)
+        self._tr[0] = [1,0,0]
+        self._tr[1] = [0,1,0]
+        self._tr[2] = [0,0,1]
+
+
         self._point = [] # Une liste de points
 
         self._seg = [] # liste d'instances de segments
+
+        self._courbe = [] # liste de listes de points de controle
 
         self._X = None
 
@@ -109,30 +118,51 @@ class Projection:
 
         self._X = event.x
         self._Y = event.y
+
         self._canvas.delete(f"point_{self._tag}")
         self._canvas.delete(f"point_seg_{self._tag}")
         self._canvas.move(self._tag, dx, dy)
 
     def maj_viewport(self, event):
-        tmp = self._canvas.coords(self._tag)
+        tmp = self._canvas.coords(self._tag) # on récupère les coord du rect
+        # point en haut à gauche et en bas à droite
         dy = tmp[3] - tmp[1]
+        dx = tmp[2] - tmp[0]
 
         self.DC0.x = tmp[0]
         self.DC0.y = self._hauteur - tmp[1] - dy
         self.DC1.x = tmp[2]
         self.DC1.y = self._hauteur - tmp[3] + dy
 
+        # Lorsque l'on déplace la fenêtre, tous les points courants seront
+        # déplacés via la matrice de translation
+
+        self._trans[0][2] = dx
+        self._trans[1][2] = dy
+
         self._M = self.calculer_matrice()
+
+        self.translater()
+
         self.projeter_segment()
         self.projeter_liste()
 
     # ---------------------------------------------------------------------
+    def translater(self):
+        """
+        Translate tous les points de la fenêtre
+        """
+        # points
+
+        pass
+
     def projeter_segment(self):
         """
         Projette tous les segments de la liste _seg de l'instance
         """
         for S in self._seg:
             self.segment_bresenham(S)
+
 
     def calculer_matrice(self):
         """
@@ -161,7 +191,16 @@ class Projection:
         """
 
         res = self._M * point
-        self._canvas.create_rectangle(res.x-point.ep, res.y-point.ep, res.x+point.ep, res.y+point.ep,\
+
+        return res
+
+    def afficher_point(self, point):
+        """
+        Affiche le point dans le canvas une fois qu'il a été projeté
+        Projette dans le DC directement, sans passer par la matrice.
+        """
+
+        self._canvas.create_rectangle(point.x-point.ep, point.y-point.ep, point.x+point.ep, point.y+point.ep,\
         width=0, fill=point.coul, tag=f"point_{self._tag}")
 
     def projeter_liste(self):
@@ -169,14 +208,12 @@ class Projection:
         projette les points de la liste
         """
         for p in self._point:
-            res = self._M * p
-            self._canvas.create_rectangle(res.x-p.ep, res.y-p.ep, res.x+p.ep, res.y+p.ep,\
-            width=0, fill=p.coul, tag=f"point_{self._tag}")
+            self.afficher_point(p)
 
-    def projeter_point_segment(self,x,y, couleur_seg, epaisseur):
+    def afficher_point_segment(self,x,y, couleur_seg, epaisseur):
         """
         Projette dans le DC directement, sans passer par la matrice
-        Utilisée spécifiquement pour Bresenham
+        Utilisée spécifiquement pour les segments
         """
         self._canvas.create_rectangle(x-epaisseur, y-epaisseur, x+epaisseur, y+epaisseur,\
         width=0, fill=couleur_seg, tag=f"point_seg_{self._tag}")
@@ -211,7 +248,7 @@ class Projection:
         pts = evaluer_fonction(xmin, xmax, nb_point, P)
 
         for point in pts :
-            vp = v.Vecteur([point[0], point[1], 1])
+            vp = Point2D(point[0], point[1])
             self + vp
 
     def segment_bresenham(self, S):
@@ -233,8 +270,8 @@ class Projection:
         B = S.P2
 
         # On les projette
-        A = self._M * A
-        B = self._M * B
+        #A = self._M * A
+        #B = self._M * B
 
         # Puis on trace le segment avec Bresenham
         dx = B.x - A.x
@@ -344,10 +381,25 @@ class Projection:
         Ajoute le point dans la liste de points
         """
 
-        if type(other) is v.Vecteur:
-            self._point.append(other)
-            self.projeter_point(other)
+        if type(other) is Point2D:
+            # On projette d'abord le point, puis on l'affiche
+            res = self.projeter_point(other)
+            self._point.append(res)
+            self.projeter_point(res)
+            self.afficher_point(res)
 
         elif type(other) is s.Segment:
-            self._seg.append(other)
-            self.segment_bresenham(other)
+            # On projette d'abord les points
+            P1 = self.projeter_point(other.P1)
+            P2 = self.projeter_point(other.P2)
+            S = s.Segment(P1, P2, other.coul, other.ep)
+            self._seg.append(S)
+            self.segment_bresenham(S)
+
+        elif type(other) is list:
+            for el in other:
+                if type(el) is Point2D:
+                    res = self.projeter_point(el)
+                    self._point.append(res)
+                    self.projeter_point(res)
+                    self.afficher_point(res)

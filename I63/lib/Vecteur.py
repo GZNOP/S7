@@ -55,3 +55,11 @@ class Vecteur :
 
             ch += " ]"
         return ch
+
+    def __mul__(self,k):
+        for i in range(len(self._vec)):
+            self._vec[i] = self._vec[i] * k
+
+    def __rmul__(self,k):
+        for i in range(len(self._vec)):
+            self._vec[i] = self._vec[i] * k
