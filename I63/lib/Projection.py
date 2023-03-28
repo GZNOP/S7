@@ -10,6 +10,7 @@ import lib.Matrice as m
 import tkinter as tk
 from lib.eval_fonc import evaluer_fonction
 from lib.Point import *
+from lib.Bezier import *
 
 """
 
@@ -47,11 +48,13 @@ class Projection:
 
         self._seg = [] # liste d'instances de segments
 
-        self._courbe = [] # liste de listes de points de controle
+        self._courbe = [] # liste de courbes de bézier
 
         self._X = None
 
         self._Y = None
+
+        self._tmp = Bezier([],ep=1) # la courbe temporaire
 
         self._canvas.create_rectangle(self.DC0.x, self._hauteur - self.DC0.y, self.DC1.x,\
         self._hauteur - self.DC1.y, fill="grey", tag=self._tag)
@@ -60,6 +63,7 @@ class Projection:
         self._canvas.tag_bind(self._tag,"<B1-Motion>", lambda event: self.deplacer_fen(event))
         self._canvas.tag_bind(self._tag,"<ButtonRelease-1>", lambda event: self.maj_viewport(event))
 
+        self._canvas.tag_bind(self._tag,"<Button-3>", lambda event: self.sur_clique_droit(event))
 
     @property
     def point(self):
@@ -106,13 +110,31 @@ class Projection:
 
     # ----------------------------
     # CALLBACKS
-    def obtenir_xy(self,event):
 
+    def sur_clique_droit(self,event):
+        """
+        Créer un point de controle quand l'utilisateur fait un clique droit
+        """
+        P = Point2D(event.x, event.y)
+        self._tmp._controle.append(P)
+
+        self._canvas.create_rectangle(P.x-P.ep, P.y-P.ep, P.x+P.ep, P.y+P.ep,\
+        width=0, fill=P.coul, tag=(f"tmp_{self._tag}",f"{self._tag}"))
+
+        self.verifie_tmp() # si c'est le 4e point, on le trace
+
+
+    def obtenir_xy(self,event):
+        """
+        met à jour les coordonnées X et Y quand l'utilisateur fait un clique gauche
+        """
         self._X = event.x
         self._Y = event.y
 
     def deplacer_fen(self,event):
-
+        """
+        Déplace la fenêtre en même temps que la souris de l'utilisateur s'il est en mouvement
+        """
         dx = event.x - self._X
         dy = event.y - self._Y
 
@@ -124,21 +146,29 @@ class Projection:
         self._canvas.move(self._tag, dx, dy)
 
     def maj_viewport(self, event):
+        """
+        Lorsque l'utilisateur lache le clique gauche, les points sont recalculés
+        et de nouveau projetés
+        """
         tmp = self._canvas.coords(self._tag) # on récupère les coord du rect
         # point en haut à gauche et en bas à droite
-        dy = tmp[3] - tmp[1]
-        dx = tmp[2] - tmp[0]
+        hau = tmp[3] - tmp[1] # la hauteur de la fenêtre
+
+        # distance entre les 2 positions de la fenetre
+        dx = tmp[0] - self.DC0.x
+        dy = tmp[3] - (self._hauteur - self.DC0.y)
 
         self.DC0.x = tmp[0]
-        self.DC0.y = self._hauteur - tmp[1] - dy
+        self.DC0.y = self._hauteur - tmp[1] - hau
         self.DC1.x = tmp[2]
-        self.DC1.y = self._hauteur - tmp[3] + dy
+        self.DC1.y = self._hauteur - tmp[3] + hau
 
         # Lorsque l'on déplace la fenêtre, tous les points courants seront
         # déplacés via la matrice de translation
 
-        self._trans[0][2] = dx
-        self._trans[1][2] = dy
+
+        self._tr[0][2] = dx
+        self._tr[1][2] = dy
 
         self._M = self.calculer_matrice()
 
@@ -146,15 +176,78 @@ class Projection:
 
         self.projeter_segment()
         self.projeter_liste()
+        self.projeter_liste_courbe()
 
     # ---------------------------------------------------------------------
+    def verifie_tmp(self):
+        """
+        Vérifie la liste tmp et trace la courbe quand il y a 4 points
+        """
+        if len(self._tmp._controle) == 4:
+            # On trace la courbe puis on remet la liste à vide
+
+            self._courbe.append(self._tmp)
+
+            self.projeter_courbe(self._tmp)
+
+            self._tmp = Bezier([], ep=1)
+            self._canvas.delete(f"tmp_{self._tag}")
+
     def translater(self):
         """
         Translate tous les points de la fenêtre
         """
         # points
+        nouveau_point = []
+        for point in self._point:
+            point = self._tr * point
+            nouveau_point.append(point)
 
-        pass
+        self._point = nouveau_point
+
+
+        # segments
+        nouveau_seg = []
+        for S in self._seg:
+            S.P1 = self._tr * S.P1
+            S.P2 = self._tr * S.P2
+
+            nouveau_seg.append(S)
+
+        self._seg = nouveau_seg
+
+        # courbe
+
+        nouvelle_courbe = []
+
+        for C in self._courbe:
+            Cp = Bezier([], C.coul, C.ep, C._interpolation)
+            for el in C:
+                el = self._tr * el
+                Cp._controle.append(el)
+
+            nouvelle_courbe.append(Cp)
+
+        self._courbe = nouvelle_courbe
+
+    def projeter_courbe(self, courbe):
+        """
+        Affiche la courbe dans le canvas
+        """
+
+        pt = courbe.bezier_polynome()
+        # On relie les points de la courbe
+        for i in range(len(pt)-1):
+            self.segment_bresenham(s.Segment(pt[i],pt[i+1],courbe.coul, courbe.ep))
+
+
+    def projeter_liste_courbe(self):
+        """
+        Affiche les courbes de bézier de l'instance
+        """
+        for C in self._courbe:
+            self.projeter_courbe(C)
+
 
     def projeter_segment(self):
         """
@@ -184,7 +277,6 @@ class Projection:
 
         return M
 
-
     def projeter_point(self, point):
         """
         projette un point unique dans le DC
@@ -201,7 +293,7 @@ class Projection:
         """
 
         self._canvas.create_rectangle(point.x-point.ep, point.y-point.ep, point.x+point.ep, point.y+point.ep,\
-        width=0, fill=point.coul, tag=f"point_{self._tag}")
+        width=0, fill=point.coul, tag=(f"point_{self._tag}",f"{self._tag}"))
 
     def projeter_liste(self):
         """
@@ -216,7 +308,7 @@ class Projection:
         Utilisée spécifiquement pour les segments
         """
         self._canvas.create_rectangle(x-epaisseur, y-epaisseur, x+epaisseur, y+epaisseur,\
-        width=0, fill=couleur_seg, tag=f"point_seg_{self._tag}")
+        width=0, fill=couleur_seg, tag=(f"point_seg_{self._tag}",f"{self._tag}"))
 
 
     def projeter_fichier(self, nom_fichier):
@@ -232,7 +324,7 @@ class Projection:
                 x = float(tmp[0])
                 y = float(tmp[1])
 
-                point = v.Vecteur([x,y,1])
+                point = Point2D(x,y)
 
                 self + point
 
@@ -282,7 +374,7 @@ class Projection:
                 y = A.y
                 dec = abs(dx) - 2*abs(dy)
                 while x <= B.x:
-                    self.projeter_point_segment(x,y,seg_color, seg_ep)
+                    self.afficher_point_segment(x,y,seg_color, seg_ep)
                     if dec < 0:
                         dec = dec +2*abs(dx)
                         y = y + (2*pas)
@@ -293,7 +385,7 @@ class Projection:
                 y = A.y
                 dec = abs(dy) - 2*abs(dx)
                 while y <= B.y:
-                    self.projeter_point_segment(x,y,seg_color, seg_ep)
+                    self.afficher_point_segment(x,y,seg_color, seg_ep)
                     if dec < 0:
                         dec = dec +2*abs(dy)
                         x = x + (2*pas)
@@ -306,7 +398,7 @@ class Projection:
                 y = A.y
                 dec = abs(dx) - 2*abs(dy)
                 while x >= B.x:
-                    self.projeter_point_segment(x,y,seg_color, seg_ep)
+                    self.afficher_point_segment(x,y,seg_color, seg_ep)
                     if dec < 0:
                         dec = dec +2*abs(dx)
                         y = y + (2*pas)
@@ -318,7 +410,7 @@ class Projection:
                 y = A.y
                 dec = abs(dy) - 2*abs(dx)
                 while y <= B.y:
-                    self.projeter_point_segment(x,y,seg_color, seg_ep)
+                    self.afficher_point_segment(x,y,seg_color, seg_ep)
                     if dec < 0:
                         dec = dec +2*abs(dy)
                         x = x - (2*pas)
@@ -331,7 +423,7 @@ class Projection:
                 y = A.y
                 dec = abs(dx) - 2*abs(dy)
                 while x >= B.x:
-                    self.projeter_point_segment(x,y,seg_color, seg_ep)
+                    self.afficher_point_segment(x,y,seg_color, seg_ep)
                     if dec < 0:
                         dec = dec +2*abs(dx)
                         y = y - (2*pas)
@@ -343,7 +435,7 @@ class Projection:
                 y = A.y
                 dec = abs(dy) - 2*abs(dx)
                 while y >= B.y:
-                    self.projeter_point_segment(x,y,seg_color, seg_ep)
+                    self.afficher_point_segment(x,y,seg_color, seg_ep)
                     if dec < 0:
                         dec = dec +2*abs(dy)
                         x = x - (2*pas)
@@ -356,7 +448,7 @@ class Projection:
                 dec = abs(dx) - 2*abs(dy)
                 while x <= B.x:
                     #self + v.Vecteur([x,y,1])
-                    self.projeter_point_segment(x,y,seg_color, seg_ep)
+                    self.afficher_point_segment(x,y,seg_color, seg_ep)
                     if dec < 0:
                         dec = dec +2*abs(dx)
                         y = y - (2*pas)
@@ -369,7 +461,7 @@ class Projection:
                 y = A.y
                 dec = abs(dy) - 2*abs(dx)
                 while y >= B.y:
-                    self.projeter_point_segment(x,y,seg_color, seg_ep) # On allume le pixel
+                    self.afficher_point_segment(x,y,seg_color, seg_ep) # On allume le pixel
                     if dec < 0:
                         dec = dec +2*abs(dy)
                         x = x + (2*pas)
@@ -381,6 +473,7 @@ class Projection:
         Ajoute le point dans la liste de points
         """
 
+        # Projection d'un point seul
         if type(other) is Point2D:
             # On projette d'abord le point, puis on l'affiche
             res = self.projeter_point(other)
@@ -388,6 +481,7 @@ class Projection:
             self.projeter_point(res)
             self.afficher_point(res)
 
+        # Projection d'un segment
         elif type(other) is s.Segment:
             # On projette d'abord les points
             P1 = self.projeter_point(other.P1)
@@ -396,10 +490,22 @@ class Projection:
             self._seg.append(S)
             self.segment_bresenham(S)
 
-        elif type(other) is list:
+        # Projection d'une liste de points
+        elif type(other) is list and type(other[0]) is Point2D:
             for el in other:
                 if type(el) is Point2D:
                     res = self.projeter_point(el)
                     self._point.append(res)
                     self.projeter_point(res)
                     self.afficher_point(res)
+
+        # Projection d'une courbe de Bézier
+        elif type(other) is Bezier:
+            M = [] # points de contrôle projetés
+
+            for el in other:
+                M.append(self.projeter_point(el))
+
+            B = Bezier(M,other.coul, other.ep)
+            self._courbe.append(B)
+            self.projeter_courbe(B)

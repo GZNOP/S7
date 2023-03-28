@@ -8,8 +8,10 @@ from lib.eval_fonc import horner
 
 class Bezier:
 
-    def __init__(self, pt_controle, coul="black", ep=3):
+    def __init__(self, pt_controle, coul="black", ep=3, nb_u=10):
         self._controle = pt_controle
+
+        self._interpolation = nb_u # le nombre de points d'interpolation
 
         self._coul = coul
 
@@ -25,6 +27,17 @@ class Bezier:
     def __setitem__(self, index, val):
         self._controle[index] = val
 
+    def __iter__(self):
+        self._n = len(self._controle)
+        self._i = -1
+        return self
+
+    def __next__(self):
+        if self._i < self._n-1:
+            self._i += 1
+            return self._controle[self._i]
+        raise StopIteration
+
     @property
     def coul(self):
         return self._coul
@@ -33,12 +46,9 @@ class Bezier:
     def ep(self):
         return self._ep
 
-
-    def calculer_barycentre(A, B, i, j, u):
-        """
-        Calcule le barycentre entre le point A et B
-        """
-
+    @property
+    def interpolation(self):
+        return self.interpolation
 
 
 
@@ -67,7 +77,7 @@ class Bezier:
 
 
 
-    def bezier1(self, nb_u):
+    def bezier1(self):
         """
         Trace la courbe de Bézier sans l'utilisation des polynomes de Bernstein
         """
@@ -75,7 +85,7 @@ class Bezier:
 
         # On calcule les points avec un pas régulier pour u (i/nb_u)
         for i in range(nb_u+1):
-            pts.append(self.trouver_point(i/nb_u))
+            pts.append(self.trouver_point(i/self._interpolation))
 
         return pts
 
@@ -96,7 +106,7 @@ class Bezier:
         point.ep = self.ep
         return point
 
-    def bezier_polynome(self, nb_u):
+    def bezier_polynome(self):
         """
         Trace la courbe de bézier en utilisant les polynomes de Bernstein et donc
         la factorisation de Horner. QUE DES CUBIQUES !
@@ -105,8 +115,8 @@ class Bezier:
         pts = []
 
         # On calcule les points avec un pas régulier pour u (i/nb_u)
-        for i in range(nb_u+1):
-            pts.append(self.trouver_point_bernstein(i/nb_u))
+        for i in range(self._interpolation+1):
+            pts.append(self.trouver_point_bernstein(i/self._interpolation))
 
         return pts
 
