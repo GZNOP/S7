@@ -11,54 +11,142 @@ import sys
 
 ###############################################################
 # variables globales
-year, day = 0, 0
+year, day, sat, rev = 0, 0, 0, 0
 quadric = None
 
 ###############################################################
-# 
+#
+
+def creer_soleil():
+    """Création du soleil"""
+
+   # glDisable(GL_LIGHTING)
+
+   # glColor4f (0.7, 0.5, 0.0, 1.0)
+    
+    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, (0.7, 0.7, 0.3, 1.0) )
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, (0.7, 0.7, 0.0, 1.0) )
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, (0.7, 0.7, 0.0, 1.0) )
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, (0.7, 0.7, 0.0, 1.0) )
+    
+    gluSphere(quadric, 1.0, 20, 16) # On créé une sphere (le soleil)
+
+    #glEnable(GL_LIGHTING)
+
+def creer_terre():
+    """Création de la Terre"""
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, (0.0, 0.0, 0.0, 1.0) )
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, (0.0, 0.0, 0.3, 1.0) )
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, (0.1, 0.1, 0.6, 1.0) )
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, (0.1, 0.1, 0.1, 1.0) )
+    
+    glRotatef(year, 0.0, 1.0, 0.0) # On la fait se deplacer de year
+    glTranslatef(2.0, 0.0, 0.0) # On la translate
+    glRotatef(day, 0.0, 1.0, 0.0) # On effectue une rotation de jour à la Terre
+    
+    gluSphere(quadric, 0.2, 10, 8) 
+
+def creer_lumiere():
+    """
+    Création de la lumière du Soleil
+    """
+    pos = (0.0, 1.5, 0.0, 1.0)
+    diffuse = (0.8, 0.8, 0.8, 1.0)
+    
+    glLightfv(GL_LIGHT0, GL_POSITION, pos) # On place la lumière
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse ) # On met les paramètres de la lumière
+
+def creer_satellite():
+    """
+    Création d'un satellite autour de la Terre
+    """
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, (0.0, 0.0, 0.0, 1.0))
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, (0.3, 0.3, 0.3, 1.0))
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, (0.1, 0.1, 0.1, 1.0))
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, (0.3, 0.3, 0.3, 1.0))
+    
+    glRotatef(sat, 1.0, 0.0, 0.0)
+    glTranslatef(0.5, 0.0, 0.0)
+    glRotatef(sat, 0.0, 1.0, 0.0)
+    gluSphere(quadric, 0.1, 8, 6) # Création de la lune
+    
 
 def init():
     global quadric
     glClearColor (0.0, 0.0, 0.0, 0.0) # Initialisation de la couleur
-    glShadeModel (GL_FLAT) # Ombre simple
+
+    
+    # glEnable(GL_COLOR_MATERIAL)
+    glEnable(GL_CULL_FACE)
+    glEnable(GL_DEPTH_TEST)
+    
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
+    glShadeModel(GL_SMOOTH) # Ombre réaliste
     quadric = gluNewQuadric() # Forme sphere
-    gluQuadricDrawStyle(quadric, GLU_LINE)
+    gluQuadricDrawStyle(quadric, GLU_FILL)
 
+
+def creer_camera():
+    """
+    Créer une perspective qui représente la caméra de la scene
+    """
+
+    gluPerspective(60, 1.0, 1.0, 5.0)
+    
+    
 def display():
-    glClear (GL_COLOR_BUFFER_BIT) # On supprime tout
-    glColor4f (1.0, 1.0, 1.0, 0.5) # On initialise la couleur 
+    glClear (GL_COLOR_BUFFER_BIT |  GL_DEPTH_BUFFER_BIT) # On supprime tout
+    # glColor4f (1.0, 1.0, 0, 1.0) # On initialise la couleur 
 
+    
     glPushMatrix() # On sauvegarde la matrice de transformation courante
-    gluSphere(quadric, 1.0, 20, 16) # On créé une sphere dans le quadric (le soleil)
-    glRotatef(year, 0.0, 1.0, 0.0) # On la fait se deplacer de year
-    glTranslatef(2.0, 0.0, 0.0) # On la translate
-    glRotatef(day, 0.0, 1.0, 0.0) # On effectue une rotation de jour à la Terre
-    gluSphere(quadric, 0.2, 10, 8) # On créé la Terre
+
+    # On translate la camera
+    #glTranslatef(0.0, 0.0, 1.0)
+    creer_camera()
+    
+    glPopMatrix()
+
+    glPushMatrix()
+    
+    creer_soleil()
+    
+    creer_lumiere()
+
+    creer_terre()
+
+    creer_satellite()
+    
     glPopMatrix() # On revient à la matrice initiale
 
+    
     glutSwapBuffers() # On met à jour les buffers
 
 def reshape(width, height):
     glViewport(0, 0, width, height) # Definition de la VP
     glMatrixMode(GL_PROJECTION) # Definition de la matrice en mode projection
     glLoadIdentity() # On insère la matrice identité dans la pile de matrice
-    if width <= height: # On trace le repère
+
+    if width <= height: # On recadre la fenêtre
         glOrtho(-2.5, 2.5, -2.5*height/width, 2.5*height/width, -10.0, 10.0)
     else:
         glOrtho(-2.5*width/height, 2.5*width/height, -2.5, 2.5, -10.0, 10.0)
     glMatrixMode(GL_MODELVIEW)
 
 def keyboard(key, x, y):
-    global day, year
+    global day, year, sat, rev
     key = key.decode('utf-8')
-    if key == 'd':
+    if key == 'j':
         day = (day + 10) % 360
-    elif key == 'D':
-        day = (day - 10) % 360
-    elif key == 'y':
+        sat = (sat + 28) % 360
+    elif key == 'a':
         year = (year + 5) % 360
-    elif key == 'Y':
-        year = (year - 5) % 360
+        sat = (sat + 28) % 360
+        day = (day + 10) % 360
+        rev = (rev + 10) % 360
     elif key == '\033':
         # sys.exit( )  # Exception ignored
         glutLeaveMainLoop()
@@ -68,7 +156,7 @@ def keyboard(key, x, y):
 # MAIN
 
 glutInit()
-glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA)
+glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH)
 
 glutCreateWindow('planet')
 glutReshapeWindow(512,512)
