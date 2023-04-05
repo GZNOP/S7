@@ -1,0 +1,7 @@
+def regle_chaine(OBS):
+    pass
+
+def hypercube(OBS):
+    """ Construit l'hypercube de la matrice """
+    pass
+
