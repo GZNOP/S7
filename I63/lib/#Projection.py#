@@ -150,6 +150,7 @@ class Projection:
         Montre les intersections des segments de l'instance
         """
         
+        
 
         
     def maj_viewport(self, event):

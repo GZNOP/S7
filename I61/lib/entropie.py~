@@ -1,0 +1,5 @@
+def probabilite(X):
+    """
+    X est la variable aléatoire composée des réalisations.
+    On calcule les probabilités de celles-ci
+    """
