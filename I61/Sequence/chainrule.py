@@ -1,6 +1,8 @@
 from math import log2
 from random import randrange
 
+from fic import lire_fichier
+
 def entropie_via_hypercube(hypercube):
     """ Calcule la formule de l'entropie jointe uniquement via l'hypercube"""
 
@@ -116,6 +118,7 @@ def construire_hypercube_concat2(XN, YN, indice):
     Construit l'hypercube de la séquence XN de longueur indice à laquelle 
     on concatène YN de longueur indice
     """
+        
     
     dico = {} # On initialise le dictionnaire qui va compter les occurences
 
@@ -124,11 +127,10 @@ def construire_hypercube_concat2(XN, YN, indice):
     
     for real in range(r):
         # On concatene XN^i avec YN^i
-        concat = tuple(XN[real][:indice] + YN[real][:indice])
-        print(concat)
+        concat = tuple(XN[real][:indice+1] + YN[real][:indice+1])
 
         # On l'ajoute dans le dico
-        if concat not in dico.keys:
+        if concat not in dico.keys():
             dico[concat] = 1
         else:
             dico[concat] += 1
@@ -143,6 +145,9 @@ def construire_hypercube_concat(XN, YN, indice):
     Construit l'hypercube de la séquence XN de longueur indice à laquelle 
     on concatène YN de longueur indice-1
     """
+    if indice == 0:
+        return construire_hypercube(XN, 1)
+
     
     dico = {} # On initialise le dictionnaire qui va compter les occurences
 
@@ -151,11 +156,11 @@ def construire_hypercube_concat(XN, YN, indice):
     
     for real in range(r):
         # On concatene XN^i avec YN^(i-1)
-        concat = tuple(XN[real][:indice] + YN[real][:indice-1])
-        print(concat)
+        concat = tuple(XN[real][:indice+1] + YN[real][:indice])
+        
 
         # On l'ajoute dans le dico
-        if concat not in dico.keys:
+        if concat not in dico.keys():
             dico[concat] = 1
         else:
             dico[concat] += 1
@@ -197,24 +202,52 @@ def IM_dirigee(OBSXN, OBSYN):
         somme += IM_conditionnelle(OBSXN, OBSYN, i)
 
     return somme
+
+def IM_jointe(OBSXN, OBSYN):
+    """ Renvoie l'information mutuelle des séquences jointes OBSXN, OBSYN"""
+
+    hcubeXN = construire_hypercube(OBSXN, len(OBSXN[0]))
+    hcubeYN = construire_hypercube(OBSYN, len(OBSYN[0]))
+    hcubeXNYN = construire_hypercube_concat2(OBSXN, OBSYN, len(OBSXN[0]))
+
+    return entropie_via_hypercube(hcubeXN) + entropie_via_hypercube(hcubeYN) - entropie_via_hypercube(hcubeXNYN)
+
+def IM_dirigee2(OBSXN, OBSYN):
+    """ Calcule l'information mutuelle grace a la formule du cours"""
+
+    hcubeYN = construire_hypercube(OBSYN, len(OBSYN[0]))
+
+    somme = 0
     
+    for n in range(len(OBSXN)):
+
+        hcube1 = construire_hypercube_concat2(OBSXN, OBSYN, n)
+        hcube2 = construire_hypercube_concat(OBSXN, OBSYN, n)
+
+        somme += entropie_via_hypercube(hcube2) - entropie_via_hypercube(hcube1)
+
+    return somme + entropie_via_hypercube(hcubeYN)
 
 if __name__ == "__main__":
 
-    OBS = [alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6)]
+    # OBS = [alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6)]
 
-    OBS2 = [
-        [0,0,1,1],
-        [1,1,0,0],
-        [0,1,1,1],
-        [0,1,0,1],
-        [0,0,1,0],
-        [1,0,1,1],
-        [1,0,0,0]
-        ]
+    # OBS2 = [
+    #     [0,0,1,1],
+    #     [1,1,0,0],
+    #     [0,1,1,1],
+    #     [0,1,0,1],
+    #     [0,0,1,0],
+    #     [1,0,1,1],
+    #     [1,0,0,0]
+    #     ]
 
-    hcube = construire_hypercube(OBS2, len(OBS2[0]))
+    XN = lire_fichier("XN.csv")
+    YN = lire_fichier("YN.csv")
+    
+    # print(IM_dirigee2(XN, YN) + IM_dirigee2(YN, XN))
+    # print(IM_jointe(XN,YN))
 
-    print(regle_chaine(hcube))
-    print(entropie_via_hypercube(hcube))
-    print(entropie_jointe(OBS))
+    print(entropie_via_hypercube(construire_hypercube(XN, len(XN[0]))))
+    
+     
