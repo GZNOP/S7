@@ -118,7 +118,6 @@ def construire_hypercube_concat2(XN, YN, indice):
     Construit l'hypercube de la séquence XN de longueur indice à laquelle 
     on concatène YN de longueur indice
     """
-        
     
     dico = {} # On initialise le dictionnaire qui va compter les occurences
 
@@ -138,7 +137,7 @@ def construire_hypercube_concat2(XN, YN, indice):
     for k in dico.keys():
         dico[k] = dico[k] / r
 
-    return dico
+    return dico  
 
 def construire_hypercube_concat(XN, YN, indice):
     """
@@ -183,7 +182,7 @@ def IM_conditionnelle(XN, YN, indice):
     resultat = entropie_via_hypercube(XNYNI_1) - H_YNI_1 + entropie_via_hypercube(YNI) - entropie_via_hypercube(XNYNI)
 
     return resultat
-    
+
 
 def IM_dirigee(OBSXN, OBSYN):
     """
@@ -220,34 +219,50 @@ def IM_dirigee2(OBSXN, OBSYN):
     somme = 0
     
     for n in range(len(OBSXN)):
-
+        # H(X^n, Y^n)
         hcube1 = construire_hypercube_concat2(OBSXN, OBSYN, n)
+
+        # H(X^n, Y^n-1)
         hcube2 = construire_hypercube_concat(OBSXN, OBSYN, n)
 
         somme += entropie_via_hypercube(hcube2) - entropie_via_hypercube(hcube1)
 
     return somme + entropie_via_hypercube(hcubeYN)
 
+def IM_dirigeeC(OBSYN, OBSXN):
+    """ Calcule l'information mutuelle IM( YN-1 -> XN ) """
+
+    N = len(OBSYN)
+    hcubeXN = construire_hypercube(OBSXN, len(OBSXN[0]))
+
+    somme = 0
+
+    for n in range(N-1):
+
+        # H(Y^n-1, X^n-1)
+        hcube1 = construire_hypercube_concat2(OBSYN, OBSXN, n)
+
+        # H(Y^n-1, X^n)
+        hcube2 = construire_hypercube_concat(OBSXN, OBSYN, n+1)
+        
+        somme += entropie_via_hypercube(hcube1) - entropie_via_hypercube(hcube2)
+
+    return somme  + entropie_via_hypercube(hcubeXN)
+        
+            
+    
+
 if __name__ == "__main__":
 
-    # OBS = [alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6)]
-
-    # OBS2 = [
-    #     [0,0,1,1],
-    #     [1,1,0,0],
-    #     [0,1,1,1],
-    #     [0,1,0,1],
-    #     [0,0,1,0],
-    #     [1,0,1,1],
-    #     [1,0,0,0]
-    #     ]
 
     XN = lire_fichier("XN.csv")
     YN = lire_fichier("YN.csv")
-    
-    # print(IM_dirigee2(XN, YN) + IM_dirigee2(YN, XN))
-    # print(IM_jointe(XN,YN))
 
-    print(entropie_via_hypercube(construire_hypercube(XN, len(XN[0]))))
+    print(IM_jointe(XN, YN))
+    b = IM_dirigee(XN, YN)
+    c = IM_dirigeeC(YN,XN)
+
+    print(b)
+    print(c)
+    print(b+c)
     
-     
