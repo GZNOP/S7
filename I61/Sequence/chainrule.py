@@ -125,41 +125,105 @@ def construire_hypercube_concat2(XN, YN, indice):
     for real in range(r):
         # On concatene XN^i avec YN^i
         concat = tuple(XN[real][:indice] + YN[real][:indice])
-        print(concat)
 
         # On l'ajoute dans le dico
-        if concat not in dico.keys:
+        if concat not in dico.keys():
             dico[concat] = 1
         else:
             dico[concat] += 1
 
+    #print(dico)
     for k in dico.keys():
         dico[k] = dico[k] / r
 
     return dico
 
+def probabilite(OBSXN, i):
+    """
+    Calcule les probabilité d'apparition de la variable aléatoire en Xi pour toutes les realisations
+    """
+    r = len(OBSXN) # Le nombre de realisations
+    dico = {} # Le dictionnaire qui va contenir les probas
+
+    # On compte les occurences
+    for ligne in range(r):
+        if OBSXN[ligne][i] not in dico.keys():
+            dico[OBSXN[ligne][i]] = 1
+        else:
+            dico[OBSXN[ligne][i]] += 1
+
+    # On calcule les probas
+    for k in dico.keys():
+        dico[k] = dico[k] / r
+
+    return dico
+
+def entropie(OBSXN, i):
+    """ 
+    Calcule l'entropie de la variable aléatoire Xi
+    """
+
+    proba = probabilite(OBSXN, i)
+    somme = 0 # La somme de l'entropie
+    
+    for k in proba.keys():
+        
+        somme += proba[k] * log2(proba[k])
+
+    return - somme
+
+def construire_hypercube_dim2(XN, YN, i):
+    """
+    Construit l'hypercube des probabilités jointes des variables aléatoire Xi et Yi
+    """
+
+    dico = {} # hypercube
+
+    r = len(XN)
+
+    for ligne in range(r):
+        # On a bien comme cle XiYi 
+        cle = (XN[ligne][i],YN[ligne][i])
+        
+        if cle not in dico.keys():
+
+            dico[cle] = 1
+
+        else:
+
+            dico[cle] += 1
+
+    # Calcule des probas
+    for k in dico.keys():
+
+        dico[k] /= r
+
+    return dico
+    
+
+            
 def construire_hypercube_concat(XN, YN, indice):
     """
     Construit l'hypercube de la séquence XN de longueur indice à laquelle 
     on concatène YN de longueur indice-1
     """
+    if indice == 0:
+        return probabilite(XN,1)
     
     dico = {} # On initialise le dictionnaire qui va compter les occurences
 
     r = len(XN)# le nb de séquences (autant pour XN que pour YN)
-
     
     for real in range(r):
         # On concatene XN^i avec YN^(i-1)
         concat = tuple(XN[real][:indice] + YN[real][:indice-1])
-        print(concat)
-
         # On l'ajoute dans le dico
-        if concat not in dico.keys:
+        if concat not in dico.keys():
             dico[concat] = 1
         else:
             dico[concat] += 1
 
+    print(dico)
     for k in dico.keys():
         dico[k] = dico[k] / r
 
@@ -197,13 +261,96 @@ def IM_dirigee(OBSXN, OBSYN):
         somme += IM_conditionnelle(OBSXN, OBSYN, i)
 
     return somme
-    
 
+def IM(OBSXN, OBSYN, i):
+    """
+    Calcule l'information mutuelle entre les variables à l'indice i de OBSXN et OBSYN
+    """
+
+    concat = construire_hypercube_dim2(OBSXN, OBSYN, i)
+    
+    res = entropie(OBSXN,i) + entropie(OBSYN, i) - entropie_via_hypercube( concat )
+
+    return res
+
+def hypercube_XNYi(OBSXN, OBSYN, i):
+    """ 
+    Calcule l'hypercube de XN et Yi concaténé ainsi que les probabilités
+    """
+    
+    r = len(OBSXN)
+    dico = {}
+
+    for ligne in range(r):
+
+        cle = tuple(OBSXN[ligne] + [OBSYN[ligne][i]])
+
+        if cle not in dico.keys():
+
+            dico[cle] = 1
+        else:
+            dico[cle] += 1
+
+    for k in dico.keys():
+        dico[k] /= r
+
+    return dico
+    
+def IM2(OBSXN, OBSYN, i):
+    """
+    Calcule l'information mutuelle entre les variables XN et Yi
+    """
+
+    hcubeXNYi = hypercube_XNYi(OBSXN, OBSYN, i)
+    hcubeXN = hypercube(OBSXN, len(OBSXN[0]))
+
+    res = entropie_via_hypercube(hcubeXN) + entropie(OBSYN, i) - entropie_via_hypercube(hcubeXNYi)
+
+    return res
+
+def IM3(OBSXN, OBSYN):
+    """
+    Calcule l'information mutuelle entre toutes les variables : XN et YN
+    """
+
+    hcubeXNYN = construire_hypercube_concat2(OBSXN, OBSYN, len(OBSXN[0]))
+    hcubeXN = construire_hypercube(OBSXN, len(OBSXN[0]))
+    hcubeYN = construire_hypercube(OBSYN, len(OBSYN[0]))
+
+    
+    res = entropie_via_hypercube(hcubeXN) + entropie_via_hypercube(hcubeYN) - entropie_via_hypercube(hcubeXNYN)
+
+    return res
+
+def IM_dirigee2(OBSXN, OBSYN):
+    """
+    Calcule l'information mutuelle dirigée avec la formule vue en cours
+    """
+
+    somme = 0
+    N =  len(OBSXN[0])
+
+    hcubeYN = construire_hypercube(OBSYN, N)
+    
+    for i in range(N):
+
+        hcubeXNYN = construire_hypercube_concat2(OBSXN, OBSYN, i)
+        hcubeXNYN_1 = construire_hypercube_concat(OBSXN, OBSYN, i)
+
+        somme += entropie_via_hypercube(hcubeXNYN_1) - entropie_via_hypercube(hcubeXNYN) + entropie_via_hypercube(hcubeYN)
+
+        hcubeYN = reduire(hcubeYN)
+
+    return somme
+    
+    
 if __name__ == "__main__":
 
-    OBS = [alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6), alea_liste(6)]
+    
+    
+    XN = [alea_liste(4), alea_liste(4), alea_liste(4), alea_liste(4), alea_liste(4), alea_liste(4), alea_liste(4)]
 
-    OBS2 = [
+    YN = [
         [0,0,1,1],
         [1,1,0,0],
         [0,1,1,1],
@@ -213,8 +360,6 @@ if __name__ == "__main__":
         [1,0,0,0]
         ]
 
-    hcube = construire_hypercube(OBS2, len(OBS2[0]))
-
-    print(regle_chaine(hcube))
-    print(entropie_via_hypercube(hcube))
-    print(entropie_jointe(OBS))
+    print(XN)
+    print(YN)
+    print(construire_hypercube_concat(XN, YN, 0))

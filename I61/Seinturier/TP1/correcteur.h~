@@ -1,0 +1,6 @@
+#ifndef _CORRECTEUR
+#define _CORRECTEUR
+
+typedef int * vecteur;
+
+#endif
