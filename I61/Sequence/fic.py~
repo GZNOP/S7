@@ -1,0 +1,6 @@
+def lire_fichier(nom_fichier):
+    """ Lis le fichier nom_fichier et en retourne une matrice d'observation """
+
+    fic = open(nom_fichier, "r")
+
+    obs = []
